@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+    <a href="/" style="color: var(--text-secondary); text-decoration: none; font-size: 14px;">← Back to Dashboard</a>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+    <div>
+        <div class="card" style="margin-bottom: 24px;">
+            <span class="platform-badge" style="background: var(--text-secondary); margin-bottom: 12px; display: inline-block;">{{ source.source_type }}</span>
+            <h1 style="font-size: 24px; margin-bottom: 12px;">{{ source.title }}</h1>
+            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 16px;">{{ source.url }}</p>
+            <p style="font-size: 14px; color: var(--text-secondary);">Word count: ~{{ source.original_content|length // 5 }}</p>
+            <p style="font-size: 14px; color: var(--text-secondary);">Added: {{ source.created_at.strftime('%b %d, %Y at %H:%M') }}</p>
+        </div>
+        
+        <div class="card">
+            <h2 style="margin-bottom: 16px;">Original Content Preview</h2>
+            <div style="background: var(--bg); padding: 16px; border-radius: 8px; max-height: 400px; overflow-y: auto;">
+                <p style="font-size: 13px; white-space: pre-wrap; font-family: 'Space Mono', monospace;">{{ source.original_content[:1500] }}{% if source.original_content|length > 1500 %}...{% endif %}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <div class="card" style="margin-bottom: 24px;">
+            <h2 style="margin-bottom: 16px;">Repurpose Content</h2>
+            <form action="/source/{{ source.id }}/repurpose" method="POST">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Target Platform</label>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">
+                            <input type="radio" name="platform" value="twitter" checked> 
+                            <span class="platform-badge platform-twitter">🐦 Twitter</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">
+                            <input type="radio" name="platform" value="linkedin"> 
+                            <span class="platform-badge platform-linkedin">💼 LinkedIn</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">
+                            <input type="radio" name="platform" value="instagram"> 
+                            <span class="platform-badge platform-instagram">📸 Instagram</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">
+                            <input type="radio" name="platform" value="devto"> 
+                            <span class="platform-badge platform-devto">⌨️ Dev.to</span>
+                        </label>
+                    </div>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; margin-top: 8px;">
+                        <input type="radio" name="platform" value="all"> 
+                        <span style="font-weight: 600;">All Platforms</span>
+                    </label>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Claude API Key</label>
+                    <input type="password" name="api_key" placeholder="sk-ant-..." 
+                        style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Repurpose with AI</button>
+            </form>
+        </div>
+        
+        {% if results %}
+        {% for platform, result in results.items() %}
+        <div class="card" style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span class="platform-badge platform-{{ platform }}">{{ platform|title }}</span>
+                <span style="font-size: 12px; color: var(--text-secondary);">{{ result.character_count }} chars</span>
+            </div>
+            <div style="background: var(--bg); padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+                <p style="font-size: 13px; white-space: pre-wrap;">{{ result.content }}</p>
+            </div>
+            {% if result.hashtags %}
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                {% for tag in result.hashtags %}
+                <span style="background: var(--bg); padding: 4px 10px; border-radius: 4px; font-size: 12px; color: var(--accent);">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+        {% if repurposed %}
+        <div class="card">
+            <h3 style="margin-bottom: 16px;">Previously Repurposed</h3>
+            {% for r in repurposed %}
+            <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                <span class="platform-badge platform-{{ r.platform }}">{{ r.platform|title }}</span>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">{{ r.character_count }} chars • {{ r.created_at.strftime('%b %d, %Y') }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

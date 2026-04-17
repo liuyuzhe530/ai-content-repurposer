@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="font-size: 28px; margin-bottom: 24px;">Scheduled Posts</h1>
+
+<div class="card">
+    {% if schedules %}
+    <div style="display: grid; gap: 12px;">
+        {% for s in schedules %}
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg); border-radius: 8px;">
+            <div>
+                <span class="platform-badge platform-{{ s.platform }}">{{ s.platform }}</span>
+                <p style="margin-top: 8px; font-size: 14px;">Scheduled: {{ s.scheduled_time.strftime('%b %d, %Y at %H:%M') }}</p>
+            </div>
+            <span style="padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; 
+                {% if s.status == 'pending' %}background: #fef3c7; color: #92400e;{% elif s.status == 'sent' %}background: #d1fae5; color: #065f46;{% else %}background: #fee2e2; color: #991b1b;{% endif %}">
+                {{ s.status }}
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+        <p>No scheduled posts yet.</p>
+        <p style="font-size: 14px; margin-top: 8px;">Use the API or dashboard to schedule posts.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

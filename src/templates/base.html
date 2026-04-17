@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Content Repurposer{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --text: #111827;
+            --text-secondary: #6b7280;
+            --accent: #7c3aed;
+            --accent-hover: #6d28d9;
+            --twitter: #1da1f2;
+            --linkedin: #0077b5;
+            --instagram: #e4405f;
+            --devto: #0a0a0a;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        
+        nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 0; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 20px; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+        .nav-links a:hover { color: var(--text); }
+        
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--bg); }
+        
+        main { padding: 40px 0; min-height: calc(100vh - 140px); }
+        
+        footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-secondary); font-size: 14px; }
+        
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+        .card h2 { font-size: 18px; margin-bottom: 16px; }
+        
+        .platform-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: white; }
+        .platform-twitter { background: var(--twitter); }
+        .platform-linkedin { background: var(--linkedin); }
+        .platform-instagram { background: var(--instagram); }
+        .platform-devto { background: var(--devto); }
+        
+        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
+        .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        
+        @media (max-width: 768px) { .nav-links { display: none; } }
+    </style>
+    {% block extra %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                AI Content Repurposer
+            </a>
+            <div class="nav-links">
+                <a href="/">Dashboard</a>
+                <a href="/source/new">New Source</a>
+                <a href="/schedule">Schedule</a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>AI Content Repurposer &copy; 2026. Transform content for any platform.</p>
+        </div>
+    </footer>
+</body>
+</html>

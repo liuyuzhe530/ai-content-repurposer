@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero" style="text-align: center; padding: 60px 0;">
+    <h1 style="font-size: 40px; margin-bottom: 16px;">Turn One Piece of Content Into <span style="color: var(--accent);">Many</span></h1>
+    <p style="font-size: 18px; color: var(--text-secondary); max-width: 600px; margin: 0 auto 32px;">
+        Blog posts, YouTube videos, podcasts - transform them into Twitter threads, LinkedIn posts, Instagram captions, and Dev.to articles with AI.
+    </p>
+    <div style="display: flex; gap: 16px; justify-content: center;">
+        <a href="/source/new" class="btn btn-primary btn-lg">Get Started Free</a>
+        <a href="#how-it-works" class="btn btn-secondary btn-lg">See How It Works</a>
+    </div>
+</div>
+
+<div class="features" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 60px 0;">
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 32px; margin-bottom: 12px;">🐦</div>
+        <h3>Twitter Threads</h3>
+        <p style="color: var(--text-secondary); font-size: 14px;">Convert long-form content into engaging threads</p>
+    </div>
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 32px; margin-bottom: 12px;">💼</div>
+        <h3>LinkedIn Posts</h3>
+        <p style="color: var(--text-secondary); font-size: 14px;">Professional posts that drive engagement</p>
+    </div>
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 32px; margin-bottom: 12px;">📸</div>
+        <h3>Instagram Captions</h3>
+        <p style="color: var(--text-secondary); font-size: 14px;">Perfectly sized with trending hashtags</p>
+    </div>
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 32px; margin-bottom: 12px;">⌨️</div>
+        <h3>Dev.to Articles</h3>
+        <p style="color: var(--text-secondary); font-size: 14px;">Technical articles formatted beautifully</p>
+    </div>
+</div>
+
+<section id="how-it-works" style="margin: 80px 0;">
+    <h2 style="text-align: center; font-size: 28px; margin-bottom: 40px;">How It Works</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+        <div>
+            <div style="background: var(--accent); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 16px;">1</div>
+            <h3>Submit Your Content</h3>
+            <p style="color: var(--text-secondary);">Paste a blog URL, YouTube link, or any content URL. We fetch it automatically.</p>
+        </div>
+        <div>
+            <div style="background: var(--accent); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 16px;">2</div>
+            <h3>AI Transforms</h3>
+            <p style="color: var(--text-secondary);">Claude analyzes your content and creates platform-specific versions.</p>
+        </div>
+        <div>
+            <div style="background: var(--accent); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 16px;">3</div>
+            <h3>Schedule & Publish</h3>
+            <p style="color: var(--text-secondary);">Review, edit, and schedule your repurposed content for publishing.</p>
+        </div>
+    </div>
+</section>
+
+{% if sources %}
+<section style="margin: 60px 0;">
+    <h2 style="font-size: 24px; margin-bottom: 24px;">Recent Sources</h2>
+    <div style="display: grid; gap: 16px;">
+        {% for source in sources %}
+        <a href="/source/{{ source.id }}" style="text-decoration: none; color: inherit;">
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span class="platform-badge platform-{{ source.source_type }}" style="background: var(--text-secondary); margin-bottom: 8px; display: inline-block;">
+                        {{ source.source_type }}
+                    </span>
+                    <h3 style="font-size: 16px; margin-bottom: 4px;">{{ source.title }}</h3>
+                    <p style="color: var(--text-secondary); font-size: 13px;">{{ source.url[:60] }}...</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="color: var(--text-secondary); font-size: 12px;">{{ source.created_at.strftime('%b %d, %Y') }}</p>
+                    <p style="font-size: 13px;">{{ source.original_content|length // 100 }} words</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}
